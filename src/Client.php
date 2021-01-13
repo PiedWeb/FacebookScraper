@@ -29,7 +29,7 @@ class Client
             throw new Exception('You must define `Client::$cacheDir`');
         }
 
-        return self::$cacheDir.'/'.sha1('fbs'.$url);
+        return self::$cacheDir.'/'.sha1('fbs'.$url.self::$cacheExpir.self::$userAgent);
     }
 
     public static function get(string $url): string
