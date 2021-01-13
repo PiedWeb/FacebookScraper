@@ -3,8 +3,6 @@
 namespace PiedWeb\FacebookScraper;
 
 use PiedWeb\Curl\Request;
-use PiedWeb\FacebookScraper\Extractor\PostExtractor;
-use Symfony\Component\DomCrawler\Crawler;
 
 class Client
 {

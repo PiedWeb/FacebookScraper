@@ -3,11 +3,9 @@
 namespace PiedWeb\FacebookScraper\Extractor;
 
 use DOMElement;
-use PiedWeb\Curl\Request;
-use Symfony\Component\DomCrawler\Crawler;
 use League\HTMLToMarkdown\HtmlConverter;
-use PiedWeb\FacebookScraper\FacebookScraper;
 use PiedWeb\FacebookScraper\Client;
+use Symfony\Component\DomCrawler\Crawler;
 
 class PostExtractor
 {
@@ -32,18 +30,17 @@ class PostExtractor
 
     protected function getImages()
     {
-
         $imgs = (new Crawler($this->dom))->filter('.img[width=320]');
 
         $return = [];
-        foreach ($imgs as $img)
-        {
+        foreach ($imgs as $img) {
             Client::get($img->getAttribute('src'));
             $return[] = Client::getCacheFilePath($img->getAttribute('src'));
         }
 
         return $return;
     }
+
     protected function getText()
     {
         $paragraphs = (new Crawler($this->dom))->filter('p');
@@ -61,7 +58,7 @@ class PostExtractor
     protected function getLikeNumber()
     {
         $likes = (new Crawler($this->dom))->filter('.like_def');
-            $like = $likes? $likes->eq(0)->text() : '0';
+        $like = $likes? $likes->eq(0)->text() : '0';
 
         preg_match('/[0-9]+/', $like, $match);
 
