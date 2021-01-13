@@ -58,7 +58,7 @@ class PostExtractor
     protected function getLikeNumber()
     {
         $likes = (new Crawler($this->dom))->filter('.like_def');
-        $like = $likes? $likes->eq(0)->text() : '0';
+        $like = $likes ? $likes->eq(0)->text('0') : '0';
 
         preg_match('/[0-9]+/', $like, $match);
 
@@ -68,7 +68,7 @@ class PostExtractor
     protected function getCommentNumber()
     {
         $likes = (new Crawler($this->dom))->filter('.cmt_def');
-        $like = $likes ? $likes->eq(0)->text() : '0';
+        $like = $likes ? $likes->eq(0)->text('0') : '0';
 
         preg_match('/[0-9]+/', $like, $match);
 
