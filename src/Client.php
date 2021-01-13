@@ -59,11 +59,13 @@ class Client
 
         $response = $response->getContent();
 
-        if (self::$client->getInfo(CURLINFO_HTTP_CODE) == 200) {
-            file_put_contents($cacheFile, $response);
-            file_put_contents(self::getCacheFilePath($url, 0), $response);
+        if (self::$client->getInfo(CURLINFO_HTTP_CODE) != 200) {
+            return '';
         }
+        //dd($cacheFile);
+        file_put_contents($cacheFile, $response);
+        file_put_contents(self::getCacheFilePath($url, 0), $response);
 
-        return is_int($response) ? '' : $response;
+        return $response;
     }
 }

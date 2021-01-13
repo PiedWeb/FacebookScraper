@@ -5,6 +5,7 @@ namespace PiedWeb\FacebookScraper\Extractor;
 use DOMElement;
 use League\HTMLToMarkdown\HtmlConverter;
 use PiedWeb\FacebookScraper\Client;
+use PiedWeb\FacebookScraper\FacebookScraper;
 use Symfony\Component\DomCrawler\Crawler;
 
 class PostExtractor
@@ -24,11 +25,27 @@ class PostExtractor
             'text' => $this->getText(),
             'comment_number' => $this->getCommentNumber(),
             'like_number' => $this->getLikeNumber(),
-            'images' => $this->getImages(),
+            'images' => $this->getImagesThumb(),
+            'imagesHd' => $this->getImages(),
         ];
     }
 
     protected function getImages()
+    {
+        $imgs = (new Crawler($this->dom))->filterXPath("//*[contains(@href,'photos')]");
+
+        $return = [];
+        foreach ($imgs as $img) {
+            $img = ImageExtractor::extractFromUrl(FacebookScraper::$facebookUrl.$img->getAttribute('href'));
+            if ($img) {
+                $return[] = $img;
+            }
+        }
+
+        return $return;
+    }
+
+    protected function getImagesThumb()
     {
         $imgs = (new Crawler($this->dom))->filter('.img[width=320]');
 

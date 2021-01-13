@@ -7,7 +7,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class FacebookScraper
 {
-    protected string $facebookUrl = 'https://m.facebook.com';
+    public static string $facebookUrl = 'https://m.facebook.com';
     protected $pageId;
 
     public function __construct(string $id)
@@ -19,7 +19,7 @@ class FacebookScraper
 
     protected function get($page = 'posts/'): Crawler
     {
-        $url = $this->facebookUrl.'/'.$this->pageId.'/'.$page;
+        $url = self::$facebookUrl.'/'.$this->pageId.'/'.$page;
 
         $response = Client::get($url);
 
