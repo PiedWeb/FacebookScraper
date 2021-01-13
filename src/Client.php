@@ -2,11 +2,12 @@
 
 namespace PiedWeb\FacebookScraper;
 
+use \Exception;
 use PiedWeb\Curl\Request;
 
 class Client
 {
-    public static string $cacheDir;
+    public static string $cacheDir = ''; // default sys_get_temp_dir
     public static int $cacheExpir = 6000; // 100 minutes;
     protected static Request $client;
     public static string $userAgent = 'Chrome/76.0.3809.87 Safari/537.36';
@@ -24,6 +25,10 @@ class Client
 
     public static function getCacheFilePath(string $url): string
     {
+        if (! self::$cacheDir) {
+            throw new Exception('You must define `Client::$cacheDir`');
+        }
+        
         return self::$cacheDir.'/'.sha1('fbs'.$url);
     }
 
