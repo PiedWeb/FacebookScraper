@@ -1,6 +1,6 @@
 # PHP Facebook Scraper
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/piedweb/FacebookScraper.svg?style=flat-square)](https://packagist.org/packages/piedweb/FacebookScraper)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/piedweb/facebook-scraper.svg?style=flat-square)](https://packagist.org/packages/piedweb/facebook-scraper)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/piedweb/FacebookScraper/Tests?label=tests)](https://github.com/PiedWeb/FacebookScraper/actions)
 [![Total Downloads](https://img.shields.io/packagist/dt/piedweb/facebook-Scraper.svg?style=flat-square)](https://packagist.org/packages/piedweb/facebook-Scraper)
 
