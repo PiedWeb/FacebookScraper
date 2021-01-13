@@ -26,7 +26,7 @@ class PostExtractor
             'comment_number' => $this->getCommentNumber(),
             'like_number' => $this->getLikeNumber(),
             'images' => $this->getImagesThumb(),
-            'imagesHd' => $this->getImages(),
+            'images_hd' => $this->getImages(),
         ];
     }
 
