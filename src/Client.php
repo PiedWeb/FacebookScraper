@@ -28,7 +28,7 @@ class Client
         if (! self::$cacheDir) {
             throw new Exception('You must define `Client::$cacheDir`');
         }
-        
+
         return self::$cacheDir.'/'.sha1('fbs'.$url);
     }
 
@@ -36,7 +36,7 @@ class Client
     {
         $cacheFile = self::getCacheFilePath($url);
 
-        if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < self::$cacheExpir) {
+        if (file_exists($cacheFile) && (self::$cacheExpir === 0 || (time() - filemtime($cacheFile)) < self::$cacheExpir)) {
             return file_get_contents($cacheFile);
         }
 

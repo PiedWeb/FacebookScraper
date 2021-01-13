@@ -8,8 +8,6 @@ use Symfony\Component\DomCrawler\Crawler;
 class FacebookScraper
 {
     protected string $facebookUrl = 'https://m.facebook.com';
-    protected string $cacheDir = '/tmp';
-    protected int $cacheExpir = 6000; // 100 minutes;
     protected $pageId;
 
     public function __construct(string $id)
