@@ -10,7 +10,7 @@ class Client
     public static string $cacheDir = ''; // default sys_get_temp_dir
     public static int $cacheExpir = 6000; // 100 minutes;
     protected static Request $client;
-    public static string $userAgent = 'Chrome/76.0.3809.87 Safari/537.36';
+    public static string $userAgent = '';
 
     public static function bootClient()
     {
@@ -20,16 +20,25 @@ class Client
 
         self::$client = (new Request())
             ->setDefaultGetOptions()
-            ->setUserAgent(self::$userAgent);
+            ->setDefaultSpeedOptions()
+            ->setNoFollowRedirection();
+
+        if (self::$userAgent) {
+            self::$client->setUserAgent(self::$userAgent);
+        } else {
+            self::$client->setDesktopUserAgent();
+        }
     }
 
-    public static function getCacheFilePath(string $url): string
+    public static function getCacheFilePath(string $url, $cacheExpir = null): string
     {
         if (! self::$cacheDir) {
             throw new Exception('You must define `Client::$cacheDir`');
         }
 
-        return self::$cacheDir.'/'.sha1('fbs'.$url.self::$cacheExpir.self::$userAgent);
+        return self::$cacheDir.'/'.sha1(
+            'fbs'.$url.($cacheExpir === null ? self::$cacheExpir : $cacheExpir).self::$userAgent
+        );
     }
 
     public static function get(string $url): string
@@ -40,10 +49,21 @@ class Client
             return file_get_contents($cacheFile);
         }
 
-        $response = self::$client->get($url);
+        self::$client->setUrl($url);
 
-        file_put_contents($cacheFile, $response);
+        $response = self::$client->exec();
 
-        return $response;
+        if (is_int($response)) {
+            return '';
+        }
+
+        $response = $response->getContent();
+
+        if (self::$client->getInfo(CURLINFO_HTTP_CODE) == 200) {
+            file_put_contents($cacheFile, $response);
+            file_put_contents(self::getCacheFilePath($url, 0), $response);
+        }
+
+        return is_int($response) ? '' : $response;
     }
 }

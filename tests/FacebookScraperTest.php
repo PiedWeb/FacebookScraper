@@ -20,5 +20,7 @@ class FacebookScraperTest extends TestCase
         $posts = $fbScraper->getPosts();
 
         $this->assertTrue($posts[0]['publish_time'] > 0);
+
+        $this->assertFileExists(Client::getCacheFilePath('https://m.facebook.com/Google/posts/', 0));
     }
 }
