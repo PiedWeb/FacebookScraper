@@ -6,13 +6,17 @@ use PiedWeb\Curl\Request;
 
 class Client
 {
-    protected static string $cacheDir = '/tmp';
-    protected static int $cacheExpir = 6000; // 100 minutes;
+    public static string $cacheDir;
+    public static int $cacheExpir = 6000; // 100 minutes;
     protected static Request $client;
-    protected static string $userAgent = 'Chrome/76.0.3809.87 Safari/537.36';
+    public static string $userAgent = 'Chrome/76.0.3809.87 Safari/537.36';
 
     public static function bootClient()
     {
+        if (! self::$cacheDir) {
+            self::$cacheDir = sys_get_temp_dir();
+        }
+
         self::$client = (new Request())
             ->setDefaultGetOptions()
             ->setUserAgent(self::$userAgent);
