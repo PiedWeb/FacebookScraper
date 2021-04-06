@@ -26,14 +26,23 @@ class FacebookScraper
         return new Crawler($response);
     }
 
-    public function getPosts(): array
+    public function getPosts(int $limit = 0): array
     {
         $crawler = $this->get('posts/');
         $posts = $crawler->filter('article');
 
         $return = [];
         foreach ($posts as $post) {
-            $return[] = (new PostExtractor($post))->get();
+            if (! $currentPost = (new PostExtractor($post))->get()) {
+                continue;
+            }
+
+            $return[] = $currentPost;
+
+
+            if ($limit !== 0 && count($return) == $limit) {
+                break;
+            }
         }
 
         return $return;

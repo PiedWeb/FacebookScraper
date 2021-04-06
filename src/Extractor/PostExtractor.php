@@ -19,7 +19,7 @@ class PostExtractor
 
     public function get()
     {
-        return [
+        return ! $this->getPostId() ? null : [
             'publish_time' => $this->getPublishTime(),
             'post_id' => $this->getPostId(),
             'text' => $this->getText(),
@@ -109,8 +109,8 @@ class PostExtractor
 
     protected function getPostId()
     {
-        preg_match('/\"post_id\\"\:([0-9]*)/', $this->getDataStore()['linkdata'], $match);
+        preg_match('/\"post_id\\"\:([0-9]+)/', $this->getDataStore()['linkdata'], $match);
 
-        return $match[1];
+        return $match[1] ?? null;
     }
 }
