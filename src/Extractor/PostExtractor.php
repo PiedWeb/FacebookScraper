@@ -8,16 +8,19 @@ use PiedWeb\FacebookScraper\Client;
 use PiedWeb\FacebookScraper\FacebookScraper;
 use Symfony\Component\DomCrawler\Crawler;
 
-class PostExtractor
+class PostExtractor implements ExtractorInterface
 {
+    const POST_SELECTOR = 'article';
     protected DOMElement $dom;
+    protected string $pageId;
 
-    public function __construct(DOMElement $dom)
+    public function __construct(DOMElement $dom, string $pageId)
     {
         $this->dom = $dom;
+        $this->pageId = $pageId;
     }
 
-    public function get()
+    public function get(): ?array
     {
         return ! $this->getPostId() ? null : [
             'publish_time' => $this->getPublishTime(),
@@ -30,13 +33,16 @@ class PostExtractor
         ];
     }
 
-    protected function getImages()
+    protected function getImages(): array
     {
         $imgs = (new Crawler($this->dom))->filterXPath("//*[contains(@href,'photos')]");
 
         $return = [];
+
         foreach ($imgs as $img) {
-            $img = ImageExtractor::extractFromUrl(FacebookScraper::$facebookUrl.$img->getAttribute('href'));
+            if (! $img instanceof DOMElement)
+                continue;
+            $img = ImageExtractor::extractFromUrl('https://m.facebook.com'.$img->getAttribute('href'));
             if ($img) {
                 $return[] = $img;
             }
@@ -45,12 +51,14 @@ class PostExtractor
         return $return;
     }
 
-    protected function getImagesThumb()
+    protected function getImagesThumb(): array
     {
         $imgs = (new Crawler($this->dom))->filter('.img[width=320]');
 
         $return = [];
         foreach ($imgs as $img) {
+            if (! $img instanceof DOMElement)
+                continue;
             Client::get($img->getAttribute('src'));
             $return[] = Client::getCacheFilePath($img->getAttribute('src'));
         }
@@ -100,17 +108,17 @@ class PostExtractor
         return $dataStore;
     }
 
-    protected function getPublishTime()
+    protected function getPublishTime() :int
     {
         preg_match('/\"publish_time\\"\:([0-9]*)/', $this->getDataStore()['linkdata'], $match);
 
-        return $match[1];
+        return (int) (isset($match[1]) ? $match[1] :  0);
     }
 
-    protected function getPostId()
+    protected function getPostId(): int
     {
         preg_match('/\"post_id\\"\:([0-9]+)/', $this->getDataStore()['linkdata'], $match);
 
-        return $match[1] ?? null;
+        return (int) (isset($match[1]) ? $match[1] :  0);
     }
 }
