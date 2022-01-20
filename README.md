@@ -18,12 +18,15 @@ composer require piedweb/facebook-scraper
 
 ```php
 use PiedWeb\FacebookScraper\FacebookScraper;
+use PiedWeb\FacebookScraper\FacebookLikeboxScraper;
 
 $fbScraper = new FacebookScraper('myPageId');
+// OR
+$fbScraper = new FacebookLikeboxScraper('myPageId');
 
 $fbScraper->getPosts();
 
-/** @Return array with
+/** @Return array with subarray containing
  * publish_time
  * post_id
  * text
