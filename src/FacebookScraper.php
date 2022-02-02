@@ -37,6 +37,9 @@ class FacebookScraper
         return new Crawler($response);
     }
 
+    /**
+     * @return array[]
+     */
     public function getPosts(int $limit = 0): array
     {
         $crawler = $this->get();

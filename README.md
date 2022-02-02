@@ -8,6 +8,8 @@
 
 _DISCLAMER_ : this code is share only for educational purpose. Using it _probably_ against facebook's terms of service.
 
+Projet en pause, le client qui requête facebook est affreux à l'usage.
+
 ## Installation
 
 ```bash
@@ -18,11 +20,8 @@ composer require piedweb/facebook-scraper
 
 ```php
 use PiedWeb\FacebookScraper\FacebookScraper;
-use PiedWeb\FacebookScraper\FacebookLikeboxScraper;
 
 $fbScraper = new FacebookScraper('myPageId');
-// OR
-$fbScraper = new FacebookLikeboxScraper('myPageId');
 
 $fbScraper->getPosts();
 

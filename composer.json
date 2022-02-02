@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "league/html-to-markdown": "^4.10",
+        "league/html-to-markdown": "^5.0",
         "piedweb/curl": "^0.0.18",
         "symfony/css-selector": "^5.2",
         "symfony/dom-crawler": "^5.2"
